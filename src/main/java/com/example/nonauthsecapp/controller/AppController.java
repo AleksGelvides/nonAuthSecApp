@@ -16,20 +16,20 @@ import java.util.*;
 @RequiredArgsConstructor
 public class AppController {
     private final UserRepo userRepo;
-    private final Long time = new Date().getTime();
 
     @GetMapping
     public String fp(Model model) {
-        model.addAttribute("serverTime", time);
+        model.addAttribute("serverTime", new Date().getTime());
         return "index";
     }
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
-                        @RequestParam String password) {
+                        @RequestParam String password,
+                        @RequestParam String time) {
         Optional<User> userOptional = userRepo.findUserByUsername(username);
         if (userOptional.isPresent()) {
-            String expectedHash = PasswordUtils.hash(userOptional.get().getPass(), String.valueOf(time));
+            String expectedHash = PasswordUtils.hash(userOptional.get().getPass(), time);
             if (expectedHash.equals(password)) {
                 return "finish";
             }

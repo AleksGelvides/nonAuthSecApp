@@ -1,6 +1,7 @@
 package com.example.nonauthsecapp.repo;
 
 import com.example.nonauthsecapp.model.User;
+import com.example.nonauthsecapp.utils.PasswordUtils;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class UserRepo {
     @PostConstruct
     public void initDB() {
         final String field = "admin";
-        USERS.put(field, new User(field, field));
+        USERS.put(field, new User(field, PasswordUtils.hashPass(field)));
     }
 
     public Optional<User> findUserByUsername(final String userName) {
